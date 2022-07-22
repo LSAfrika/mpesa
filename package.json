@@ -1,0 +1,18 @@
+{
+  "name": "mpesa-api",
+  "version": "1.0.0",
+  "description": "mpesa test case",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "keywords": [
+    "mpesa"
+  ],
+  "author": "LSAfrika",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.1",
+    "unirest": "^0.6.0"
+  }
+}
