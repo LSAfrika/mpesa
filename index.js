@@ -5,6 +5,9 @@ const app= express()
 app.use(express.json())
 app.use(express.urlencoded({extended:true}));
 
+
+const stkpushurl='https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest'
+
 app.get('/accesstoken',authsafnode,(req,res)=>{
 
     try {
@@ -20,8 +23,108 @@ app.get('/accesstoken',authsafnode,(req,res)=>{
 
 })
 
+function time(){
+    const timestamp=new Date()
+    // const date=mapdate()
+    const date=timestamp.getFullYear()+""+mapmonth()+mapdate()+""+maphour()+""+timestamp.getMinutes()+""+mapseconds()
+    console.log(date);
+    return date 
+}
+function maphour(){
+    const timestamp=new Date()
+    let Returnedhour=''
+    const hour = timestamp.getHours()
+    if(hour<10){
+        Returnedhour='0'+hour
+   //     console.log('hour:',Returnedhour);
+        return Returnedhour
 
-app.get('/stkpush',authsafcom,(req,res)=>{
+    }else{
+
+        Returnedhour=''+hour
+    //    console.log(Returnedhour);
+        return Returnedhour
+
+    }
+
+}
+function mapdate(){
+    const timestamp=new Date()
+    let day=''
+    const date = timestamp.getDate()
+    if(date<10){
+        day='0'+date
+   //     console.log('date:',date);
+        return day
+
+    }else{
+
+        day=''+date
+  //      console.log(day);
+        return day
+    }
+
+}
+function mapmonth(){
+    const timestamp=new Date()
+    let returnedmonth=''
+    const month = timestamp.getMonth()
+    if(month<10){
+        returnedmonth='0'+month
+      //  console.log('month:',month);
+        return returnedmonth
+
+    }else{
+
+        returnedmonth=''+date
+      //  console.log(returnedmonth);
+        return returnedmonth
+    }
+
+}
+
+function mapseconds(){
+    const timestamp=new Date()
+    let returnedseconds=''
+    const seconds = timestamp.getSeconds()
+    if(seconds<10){
+        returnedseconds='0'+seconds
+      //  console.log('month:',month);
+        return returnedseconds
+
+    }else{
+
+        returnedseconds=''+seconds
+      //  console.log(returnedseconds);
+        return returnedseconds
+    }
+
+}      
+time()
+// day()
+
+app.get('/stkpush',authsafnode,async(req,res)=>{
+    try {
+   
+        const auth = 'Bearer '+req.body.access_token
+
+        const stkres = axios.post(stkpushurl,{ 
+ 
+        },
+            
+            {
+                headers:{
+                    'Authorization':auth
+                }
+            }
+            
+            
+            
+            )
+        
+    } catch (error) {
+        
+    }
 
 })
 
