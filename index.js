@@ -1,16 +1,17 @@
 let unirest = require('unirest');
 const express = require('express')
+const axios = require('axios').default;
 const app= express()
 app.use(express.json())
 app.use(express.urlencoded({extended:true}));
 
-app.get('/accesstoken',authsafcom,(req,res)=>{
+app.get('/accesstoken',authsafnode,(req,res)=>{
 
     try {
         //*     get access token using consumer key and consumer secret
     // authsafcom(res)
-    console.log('req body:',req.body.token)
-    res.send({acctoken:req.body.token})
+    console.log('req body:',req.body.access_token)
+    res.send({acctoken:req.body.access_token})
 
     } catch (error) {
         res.send(error.message)
@@ -18,6 +19,14 @@ app.get('/accesstoken',authsafcom,(req,res)=>{
     }
 
 })
+
+
+app.get('/stkpush',authsafcom,(req,res)=>{
+
+})
+
+
+
 
 app.post('/validation',(req,res)=>{
     console.log('validation: ',req.body);
@@ -53,6 +62,28 @@ function authsafcom(req,res,next){
     });
 }
 
+async function authsafnode(req,res,next){
+    try {
+
+        const result = await axios.get('https://sandbox.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials',
+        {
+            headers:{'Authorization':'Basic cFJZcjZ6anEwaThMMXp6d1FETUxwWkIzeVBDa2hNc2M6UmYyMkJmWm9nMHFRR2xWOQ=='}
+        })
+
+        // console.log(result.data.access_token);
+        req.body.access_token=result.data.access_token
+
+        next()
+
+        
+    } catch (error) {
+        
+        console.log('error caught: ',error.message);
+        res.status(500).send({message:'server error',
+    err:error.message})
+    }
+
+}
 
 function registerurl(req,res,next){
 
